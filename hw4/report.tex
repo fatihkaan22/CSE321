@@ -1,0 +1,184 @@
+% Created 2022-01-09 Sun 18:10
+% Intended LaTeX compiler: pdflatex
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\documentclass{article}
+\usepackage{here}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{parskip}
+\renewcommand\arraystretch{1.4}
+\usepackage[margin=1in]{geometry}
+\usepackage{minted}
+\usepackage{multicol}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newminted{c}{fontsize=\footnotesize,frame=single,framesep=2mm}
+\usepackage[demo]{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+\DeclareCaptionFormat{empty}{}
+\captionsetup[subfigure]{labelformat=empty}
+\newminted{text}{breaklines,fontsize=\footnotesize,frame=single,framesep=2mm}
+\author{Fatih Kaan Salgır - 171044009}
+\date{}
+\title{CSE321 - Introduction to Algorithms - HW4}
+\hypersetup{
+ pdfauthor={Fatih Kaan Salgır - 171044009},
+ pdftitle={CSE321 - Introduction to Algorithms - HW4},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.2 (Org mode 9.5)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section*{1}
+\label{sec:orgc7f5b98}
+The minimum number of cut is ensured by performing the cut from the middle of the steel.
+At any step, in case the length of the steel is an odd number, the middle is determined by floor division.
+The part with shorter length can be divided along with the longer part.
+Therefore, the algorithm called recursively, with length of longer part.
+
+\subsubsection*{Backward substitution:}
+\label{sec:org27e3305}
+\begin{flalign*}
+T(n) &= 1 + T \left( \frac{n}{2} \right) &\\
+T(n) &= 2 + T \left( \frac{n}{4} \right) &\\
+&\;\;\vdots \notag &\\
+T(n) &= k + T \left( \frac{n}{2^k} \right) &
+\end{flalign*}
+\begin{flalign*}
+\textrm{Assume } & \frac{n}{2^k} = 1 \therefore n = 2^k \textrm{ and } k = \log(n) &
+\end{flalign*}
+\begin{flalign*}
+T(n) &= T(1) + T(\log(n)) &\\
+T(n) &\in \Theta(\log(n)) &\\
+\end{flalign*}
+
+
+\newpage
+\section*{2}
+\label{sec:org839aae1}
+The worst and the best results are calculated by dividing the array into 2 parts, until there are 1 or 2 elements left in the sub-arrays.
+The minimum and maximum values are calculated in base case and returned.
+The time complexity of algorithm is \(\Theta(n)\)
+\subsubsection*{Backward substitution:}
+\label{sec:org61f2e60}
+\begin{flalign*}
+T(n) &= T \left( \frac{n}{2} \right) + T \left( \frac{n}{2} \right) &\\
+T(n) &= 2 T \left( \frac{n}{2} \right) &\\
+T(n) &= 2^2 T \left( \frac{n}{2^2} \right)&\\
+&\;\;\vdots \notag &\\
+T(n) &= 2^k T \left( \frac{n}{2^k} \right)&
+\end{flalign*}
+\begin{flalign*}
+\textrm{Assume } & \frac{n}{2^k} = 1 \therefore n = 2^k &
+\end{flalign*}
+\begin{flalign*}
+T(n) &= n T(1) &\\
+T(n) &\in \Theta(n) &\\
+\end{flalign*}
+The space complexity of algorithm is \(\Theta(n)\) because of the recursive call stack.
+
+\section*{3}
+\label{sec:org64d33ca}
+To obtain the first meaningful \(k^{th}\) experiment, minimum \(k^{th}\) element in the sorted can be returned.
+However sorting is not necessary to find minimum \(k^{th}\) element.
+The quick select algorithm can be used in order to find out the result without sorting the array.
+The partition algorithm will return the sorted index of the last element.
+Also it will ensure that all the element less than the pivot are moved to the left side of the array.
+Depending on the pivot index the left or right side will be valuated until the desired \(k\) is the index of pivot.
+
+In the best case the algorithm will return the desired \(k^{th}\) element after running single partition algorithm.
+One of the worst cases is when the array is already sorted and we are looking for the first meaningful experiment.
+In this case the partition algorithm runs as the size of the array as much times.
+
+
+\begin{flalign*}
+ T_{\text{worst}}(n) &= \sum_{i=0}^n T_{partition} \in \Theta(n^2) &\\
+ T_{\text{best}}(n) &= T_{partition} \in \Theta(n) &\\ \\
+ T(n) &\in O(n) &
+\end{flalign*}
+
+\newpage
+
+\section*{4}
+\label{sec:orgb8ba91c}
+
+In order to obtain the number of reverse-ordered pairs with divide \& conquer algorithm; we can use the merge sort itself and count the number of reverse-order pairs.
+In merge part of the algorithm, where we compare the left and right side, we make use of the number of unordered pairs.
+The complexity of the algorithm is identical with merge sort which is \(\Theta\)(n \(\log\)(n))
+
+\begin{flalign*}
+& T(n) = a T(\frac{n}{b}) + f(n) \text{ where}& \\
+ a&: \text{ cost of the sub problem}& \\
+ \frac{n}{b}&: \text{ size of the sub problem}&
+\end{flalign*}
+
+The recurrence relation is,
+\begin{flalign*}
+& T(n) = 2 T(\frac{n}{2}) + T_{merge}(n) & \\
+& T(n) = 2 T(\frac{n}{2}) + \Theta(n) &
+\end{flalign*}
+
+The complexity of the recurrence relation can be determined by Master theorem.
+\begin{flalign*}
+&a = 2 &\\
+&b = 2 &\\
+&f(n) = \Theta(n^1) \implies c = 1 &\\
+&\log_ba = \log_2 2 = 1 & \\
+&\log_ba = c \implies T(n) = \Theta(n^{c} \log(n)) = \Theta(n \log(n)) &
+\end{flalign*}
+
+Therefore the time complexity is \(\Theta(n \log(n))\)
+
+\newpage
+\section*{5}
+\label{sec:org73490bf}
+Brute-force algorithm is a straight-forward approach which requires multiplication of \(a\), \(n\) times.
+The time complexity is \(\Theta(n)\).
+\begin{flalign*}
+ T(n) &= \sum_{i=0}^n 1 \in \Theta(n) &
+\end{flalign*}
+
+\noindent\rule{\textwidth}{0.5pt}
+
+Divide \& conquer algorithm is solving problems by dividing into 2 sub-problems, with half of the size, and combines them in constant time.
+\begin{flalign*}
+& T(n) = a T(\frac{n}{b}) + f(n) \text{ where}& \\
+ a&: \text{ cost of the sub problem}& \\
+ \frac{n}{b}&: \text{ size of the sub problem}&
+\end{flalign*}
+
+The recurrence relation is,
+\begin{flalign*}
+& T(n) = 2 T(\frac{n}{2}) + c &
+\end{flalign*}
+
+The complexity of the recurrence relation can be determined by Master theorem.
+\begin{flalign*}
+&a = 2 &\\
+&b = 2 &\\
+&f(n) = \Theta(n^0) \implies c = 0 &\\
+&\log_ba = \log_2 2 = 1 & \\
+&\log_ba > c \implies T(n) = \Theta(n^{\log_ba}) = \Theta(n) &
+\end{flalign*}
+
+Therefore the complexity of divide \& conquer algorithm is
+\(\Theta(n)\)
+
+\newpage
+\end{document}
