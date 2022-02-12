@@ -1,0 +1,182 @@
+% Created 2021-12-19 Sun 18:00
+% Intended LaTeX compiler: pdflatex
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\documentclass{article}
+\usepackage{here}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{parskip}
+\renewcommand\arraystretch{1.4}
+\usepackage[margin=1in]{geometry}
+\usepackage{minted}
+\usepackage{multicol}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newminted{c}{fontsize=\footnotesize,frame=single,framesep=2mm}
+\usepackage[demo]{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+\DeclareCaptionFormat{empty}{}
+\captionsetup[subfigure]{labelformat=empty}
+\newminted{text}{breaklines,fontsize=\footnotesize,frame=single,framesep=2mm}
+\author{Fatih Kaan Salgır - 171044009}
+\date{}
+\title{CSE321 - Introduction to Algorithms - HW3}
+\hypersetup{
+ pdfauthor={Fatih Kaan Salgır - 171044009},
+ pdftitle={CSE321 - Introduction to Algorithms - HW3},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.2 (Org mode 9.5)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+
+\section*{1}
+\label{sec:org28b3a56}
+
+\subsection*{a)}
+\label{sec:orge2cf019}
+
+\begin{flalign*}
+& T(n) = T(n-1) + c \quad T(1) = c&
+\end{flalign*}
+Therefore \(T(n) \in \Theta(n)\)
+
+\subsection*{b)}
+\label{sec:org1399001}
+
+\begin{flalign*}
+& T(n) = a T(\frac{n}{b}) + f(n) \text{ where}& \\
+ a&: \text{ cost of the sub problem}& \\
+ \frac{n}{b}&: \text{ size of the sub problem}&
+\end{flalign*}
+
+The recurrence relation is,
+\begin{flalign*}
+& T(n) = 2 T(\frac{n}{2}) + c &
+\end{flalign*}
+
+The complexity of the recurrence relation can be determined by Master theorem.
+\begin{flalign*}
+&a = 2 &\\
+&b = 2 &\\
+&f(n) = \Theta(n^0) \implies c = 0 &\\
+&\log_ba = \log_2 2 = 1 & \\
+&\log_ba > c \implies T(n) = \Theta(n^{\log_ba}) = \Theta(n) &
+\end{flalign*}
+
+Therefore the complexity is
+\(\Theta(n)\)
+
+\noindent\rule{\textwidth}{0.5pt}
+
+Even though they have same time complexity, I would prefer the \texttt{alg2} since it has better space complexity over \texttt{alg1}.
+
+\section*{2}
+\label{sec:org0ff9a78}
+
+Basic operation of the algorithm is \texttt{result = result + (x ** i) * coefficients[i]} which takes constant time to evaluate.
+In the implementation the degree of the polynomial is the number of coefficients.
+For an polynomial with degree of \(n\), the time complexity of the algorithm is \(\Theta(n)\).
+
+I don't think it is possible to design an algorithm has better complexity. Linear complexity is just as good as it gets.
+
+\section*{3}
+\label{sec:org09ac87f}
+
+The algorithm iterates over the given string, and for every element starts with the given \texttt{startsWith} parameter, it will iterate over the rest of the array and count number of elements in the string matches \texttt{endsWith} parameter.
+In best case, which is there are no matching element with given \texttt{startsWith} parameter, the complexity is \(\Theta(n)\).
+In worst case, the string consist of duplication of same element, also the \texttt{starsWith} and \texttt{endsWith} parameter is also the same element.
+\begin{flalign*}
+& C_{\text{worst}}(n)
+= \sum_{i=0}^n \sum_{j=i}^n 1
+= \sum_{i=0}^n (n - i + 1)
+= \sum_{i=0}^n (n + 1) - \sum_{i=0}^n i
+= n (n + 1) - \frac{n (n+1)}{2} & \\
+& = \frac{n (n+1)}{2} \in \Theta(n^2) &
+\end{flalign*}
+
+In average case the complexity is between linear and quadratic time which can be categorized as \(O(n^2)\)
+
+\section*{4}
+\label{sec:org031347b}
+
+In brute force approach, for every point we need to calculate distance between other points in the given metric space.
+
+\begin{verbatim}
+Algorithm closestDistance(points[0..n-1])
+    minimum = distance(points[0], points[1])
+    for i in points
+        for j in points
+            if (i is not j)
+                d = distance(i,j)
+                if (minimum > d)
+                    minimum = d
+    return minimum
+\end{verbatim}
+
+\newpage
+
+\begin{flalign*}
+& C(n) = \sum_{i=0}^n \sum_{j=0}^n d(k) \text{ ,where $d(k)$ is distance function} & \\
+& C(n) = n^2 d(k) &
+\end{flalign*}
+
+
+The time complexity is \(\theta(n^2)\).
+In mutli-dimensional space we have additional linear complexity of \(k\) because of euclidean distance function.
+So the complexity in terms of number of points and number of dimensions is \(\theta(n^2 k)\)
+
+\section*{5}
+\label{sec:orgb75b3d7}
+
+\subsection*{a)}
+\label{sec:orgf3ccf73}
+
+In brute force approach, the algorithm iterates over the regions, and for every region calculates the profit to next consecutive regions.
+Profit calculation is linear complexity algorithm in terms of length of the regions. (\texttt{sum} function in the code). For \(n\) regions, the time complexity is \(\Theta(n^3)\)
+\begin{flalign*}
+& C(n) = \sum_{i=0}^n \sum_{j=i}^n \sum_{k=i}^j 1 \in \Theta(n^3) &
+\end{flalign*}
+
+\subsection*{b)}
+\label{sec:orgf77c3cd}
+
+In divide and conquer approach, the algorithm solves the problem of size \(n\) by dividing them into 2 subproblems that have half the size then combining them in linear time.
+
+\begin{flalign*}
+& T(n) = a T(\frac{n}{b}) + f(n) \text{ where}& \\
+ a&: \text{ cost of the sub problem}& \\
+ \frac{n}{b}&: \text{ size of the sub problem}&
+\end{flalign*}
+\begin{flalign*}
+& T(n) = 2T(\frac{n}{2}) + \Theta(n) &
+\end{flalign*}
+
+The complexity of the recurrence relation can be determined by Master theorem.
+\begin{flalign*}
+&a = 2 &\\
+&b = 2 &\\
+&f(n) = \Theta(n^1) \implies c = 1 &\\
+&\log_ba = \log_2 2 = 1 & \\
+&\log_ba = c \implies T(n) = \Theta(n^c \log n) = \Theta(n \log n) &
+\end{flalign*}
+
+Therefore the complexity is
+\(\Theta(n \log n)\)
+\end{document}

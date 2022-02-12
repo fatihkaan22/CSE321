@@ -1,0 +1,145 @@
+#+TITLE: CSE321 - Introduction to Algorithms - HW3
+
+#+OPTIONS: num:nil
+#+SETUPFILE: /home/near/opt/template-nodate.org
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+#+LaTeX_CLASS_OPTIONS: [a4paper,12pt]
+#+LATEX_HEADER: \usepackage{minted}
+#+LATEX_HEADER: \usepackage{multicol}
+#+LATEX_HEADER: \definecolor{bg}{rgb}{0.95,0.95,0.95}
+#+LATEX_HEADER: \newminted{c}{fontsize=\footnotesize,frame=single,framesep=2mm}
+#+LATEX_HEADER: \usepackage[demo]{graphicx}
+#+LATEX_HEADER: \usepackage{subcaption}
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \DeclareCaptionFormat{empty}{}
+#+LATEX_HEADER: \captionsetup[subfigure]{labelformat=empty}
+
+#+LATEX_HEADER: \newminted{text}{breaklines,fontsize=\footnotesize,frame=single,framesep=2mm}
+
+# #+ATTR_LATEX: :font \ttfamily{}
+
+
+* 1
+
+** a)
+
+\begin{flalign*}
+& T(n) = T(n-1) + c \quad T(1) = c&
+\end{flalign*}
+Therefore $T(n) \in \Theta(n)$
+
+** b)
+
+\begin{flalign*}
+& T(n) = a T(\frac{n}{b}) + f(n) \text{ where}& \\
+ a&: \text{ cost of the sub problem}& \\
+ \frac{n}{b}&: \text{ size of the sub problem}&
+\end{flalign*}
+
+The recurrence relation is,
+\begin{flalign*}
+& T(n) = 2 T(\frac{n}{2}) + c &
+\end{flalign*}
+
+The complexity of the recurrence relation can be determined by Master theorem.
+\begin{flalign*}
+&a = 2 &\\
+&b = 2 &\\
+&f(n) = \Theta(n^0) \implies c = 0 &\\
+&\log_ba = \log_2 2 = 1 & \\
+&\log_ba > c \implies T(n) = \Theta(n^{\log_ba}) = \Theta(n) &
+\end{flalign*}
+
+Therefore the complexity is
+$\Theta(n)$
+
+-----
+
+Even though they have same time complexity, I would prefer the =alg2= since it has better space complexity over =alg1=.
+
+* 2
+
+Basic operation of the algorithm is =result = result + (x ** i) * coefficients[i]= which takes constant time to evaluate.
+In the implementation the degree of the polynomial is the number of coefficients.
+For an polynomial with degree of $n$, the time complexity of the algorithm is $\Theta(n)$.
+
+I don't think it is possible to design an algorithm has better complexity. Linear complexity is just as good as it gets.
+
+* 3
+
+The algorithm iterates over the given string, and for every element starts with the given =startsWith= parameter, it will iterate over the rest of the array and count number of elements in the string matches =endsWith= parameter.
+In best case, which is there are no matching element with given =startsWith= parameter, the complexity is $\Theta(n)$.
+In worst case, the string consist of duplication of same element, also the =starsWith= and =endsWith= parameter is also the same element.
+\begin{flalign*}
+& C_{\text{worst}}(n)
+= \sum_{i=0}^n \sum_{j=i}^n 1
+= \sum_{i=0}^n (n - i + 1)
+= \sum_{i=0}^n (n + 1) - \sum_{i=0}^n i
+= n (n + 1) - \frac{n (n+1)}{2} & \\
+& = \frac{n (n+1)}{2} \in \Theta(n^2) &
+\end{flalign*}
+
+In average case the complexity is between linear and quadratic time which can be categorized as $O(n^2)$
+
+* 4
+
+In brute force approach, for every point we need to calculate distance between other points in the given metric space.
+
+#+begin_src
+Algorithm closestDistance(points[0..n-1])
+    minimum = distance(points[0], points[1])
+    for i in points
+        for j in points
+            if (i is not j)
+                d = distance(i,j)
+                if (minimum > d)
+                    minimum = d
+    return minimum
+#+end_src
+
+\newpage
+
+\begin{flalign*}
+& C(n) = \sum_{i=0}^n \sum_{j=0}^n d(k) \text{ ,where $d(k)$ is distance function} & \\
+& C(n) = n^2 d(k) &
+\end{flalign*}
+
+
+The time complexity is $\theta(n^2)$.
+In mutli-dimensional space we have additional linear complexity of $k$ because of euclidean distance function.
+So the complexity in terms of number of points and number of dimensions is $\theta(n^2 k)$
+
+* 5
+
+** a)
+
+In brute force approach, the algorithm iterates over the regions, and for every region calculates the profit to next consecutive regions.
+Profit calculation is linear complexity algorithm in terms of length of the regions. (=sum= function in the code). For $n$ regions, the time complexity is $\Theta(n^3)$
+\begin{flalign*}
+& C(n) = \sum_{i=0}^n \sum_{j=i}^n \sum_{k=i}^j 1 \in \Theta(n^3) &
+\end{flalign*}
+
+** b)
+
+In divide and conquer approach, the algorithm solves the problem of size $n$ by dividing them into 2 subproblems that have half the size then combining them in linear time.
+
+\begin{flalign*}
+& T(n) = a T(\frac{n}{b}) + f(n) \text{ where}& \\
+ a&: \text{ cost of the sub problem}& \\
+ \frac{n}{b}&: \text{ size of the sub problem}&
+\end{flalign*}
+\begin{flalign*}
+& T(n) = 2T(\frac{n}{2}) + \Theta(n) &
+\end{flalign*}
+
+The complexity of the recurrence relation can be determined by Master theorem.
+\begin{flalign*}
+&a = 2 &\\
+&b = 2 &\\
+&f(n) = \Theta(n^1) \implies c = 1 &\\
+&\log_ba = \log_2 2 = 1 & \\
+&\log_ba = c \implies T(n) = \Theta(n^c \log n) = \Theta(n \log n) &
+\end{flalign*}
+
+Therefore the complexity is
+$\Theta(n \log n)$
